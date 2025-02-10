@@ -1,11 +1,14 @@
 import { View, Text } from 'react-native'
 import React from 'react'
+import { NativeBaseProvider } from 'native-base'
+import Stacknavigator from './src/navigation/Stacknavigator'
+
 
 const App = () => {
   return (
-    <View>
-      <Text>App</Text>
-    </View>
+  <NativeBaseProvider>
+    <Stacknavigator/>
+  </NativeBaseProvider>
   )
 }
 
