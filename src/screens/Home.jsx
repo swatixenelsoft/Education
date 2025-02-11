@@ -1,9 +1,9 @@
 import { View , TouchableOpacity, Dimensions,StyleSheet} from 'react-native'
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import styles from '../styles/Home.style'
 import HamIcon from '../assets/icons/Hamburger.svg'
 import Bell from '../assets/icons/Bell4.svg'
-import { Divider, ScrollView, Text , FlatList} from 'native-base'
+import { Divider, ScrollView, Text , FlatList, Image} from 'native-base'
 import Banner from '../assets/images/Banner.svg'
 import M1 from '../assets/images/M1.svg'
 import M2 from '../assets/images/M2.svg'
@@ -22,16 +22,39 @@ import I3 from '../assets/images/I1.svg'
 import I4 from '../assets/images/I1.svg'
 import Timebg from '../assets/images/Timebg.svg'
 import Period from '../assets/images/Physics.svg'
+import { getData } from '../services/authservices'
 
 
 
-const Home = () => {
+const Home = ({navigation,route}) => {
 
   const [selectedDay, setSelectedDay] = useState("");
+  const [userData , setUserData] = useState(null)
   const {width} = Dimensions.get('window')
+  const data = route?.params
+  
+  console.log(data,'data')
+  console.log(route?.params?.name)
 
 
   const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+const get_Data = async()=>{
+  try{
+    const response = await getData()
+    console.log(response.data)
+    setUserData(response.data.data)
+
+  }
+  catch(error){
+    console.error(error.response.data)
+    throw error
+  }
+}
+
+useEffect(()=>{
+  get_Data()
+},[])
 
 
   const learningData = [
@@ -58,14 +81,28 @@ const Home = () => {
    
   ];
 
+  const renderData = ({item})=>(
+    <View style={styles.flexspace}>
+    <View style={styles.flexContainer}>
+      <Image1/>
+      <View style={{marginLeft:8}}>
+        <Text fontSize={'md'} color={' rgba(48, 57, 114, 1)'} fontWeight={'600'}>{item?.name}</Text>
+        <Text color={' rgba(48, 57, 114, 0.5)'}>{item?.dob}</Text>
+      </View>
+
+    </View>
+    <Text fontSize={'md'} color={' rgba(48, 57, 114, 1)'} fontWeight={'600'}>001</Text>
+  </View>
+  )
+
 
 
   const renderItem = ({item})=>(
     <View style={styles.IcontentContainer}>
-      <item.icon/>
+      <Image source={{uri:item?.teacherAvatar}} width={'8'} height={'20'}></Image>
     <View style={{marginLeft:9}}>
-      <Text fontSize={'lg'} fontWeight={'700'}>{item.name}</Text>
-      <Text color={' rgba(53, 58, 64, 1)'}>{item.course}</Text>
+      <Text fontSize={'lg'} fontWeight={'700'}>{item?.teacher}</Text>
+      <Text color={' rgba(53, 58, 64, 1)'}>{item?.subject}</Text>
     </View>
       </View>
   )
@@ -82,7 +119,7 @@ const Home = () => {
   {/* <Bell/> */}
   <View style={styles.flexItemContainer}>
   <View>
-  <Text marginTop={'2'} fontSize={'3xl'} fontWeight={'semibold'} color={'white'}>Hi Harsh 👋</Text>
+  <Text marginTop={'2'} fontSize={'3xl'} fontWeight={'semibold'} color={'white'} ellipsizeMode='tail' numberOfLines={1} maxW={'60%'}>Hi  {userData?.name}👋</Text>
 <Text color={'#FFFFFF'}>Lets Explore your learnings today!</Text>
 </View>
 <Userimage/>
@@ -102,9 +139,9 @@ const Home = () => {
   <Text fontSize={'3xl'} fontWeight={'semibold'}>Instructor</Text>
 
   <FlatList
-      data={learningData}
+      data={userData?.subjectTeacherDetails}
       renderItem={renderItem}
-      keyExtractor={(item, index) => index.toString()}
+      keyExtractor={(item, index) => item.toString()}
       numColumns={2}
       columnWrapperStyle={styles.row}
        width={'100%'}
@@ -126,49 +163,7 @@ const Home = () => {
 
 </View> */}
 
-<View>
 
-
-  
-<View style={styles.bg}>
-  <View style={StyleSheet.absoluteFill}>
-    <Timebg width="100%" height="100%" />
-  </View>
-
-  <View style={{ width: '90%',marginHorizontal:'auto' }}>
-  <Text color={' rgba(48, 57, 114, 1)'} fontWeight={'700'} fontSize={'md'} marginTop={'4'} marginBottom={'3'}>Time Table</Text>
-  <FlatList
-        data={weekdays}
-        horizontal
-        keyExtractor={(item) => item}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            onPress={() => setSelectedDay(item)}
-            style={{
-              paddingHorizontal:14,
-              paddingVertical:4,
-              borderRadius: 40,
-              margin:2,
-borderWidth:1,
-borderColor:'rgba(48, 57, 114, 0.5)',
-              backgroundColor: selectedDay === item ? "# rgba(48, 57, 114, 1)" : "#FFFFFF",
-            }}
-          >
-            <Text
-              style={{
-                color: selectedDay === item ? "#fff" : "#000",
-              }}
-            >
-              {item}
-            </Text>
-          </TouchableOpacity>
-        )}
-      />
-<Period/>
-    {/* Your content here */}
-  </View>
-</View>
-</View>
 
 
 </View>
@@ -177,67 +172,14 @@ borderColor:'rgba(48, 57, 114, 0.5)',
 <Text fontSize={'md'} color={' rgba(48, 57, 114, 1)'} fontWeight={'600'} width={'90%'}  marginX={'auto'}>Students</Text>
 
   <View style={styles.bottomContent}>
-  <View style={styles.flexspace}>
-    <View style={styles.flexContainer}>
-      <Image1/>
-      <View style={{marginLeft:8}}>
-        <Text fontSize={'md'} color={' rgba(48, 57, 114, 1)'} fontWeight={'600'}>Rishabh Singh</Text>
-        <Text color={' rgba(48, 57, 114, 0.5)'}>18/11/2001</Text>
-      </View>
+ 
 
-    </View>
-    <Text fontSize={'md'} color={' rgba(48, 57, 114, 1)'} fontWeight={'600'}>002</Text>
-  </View>
-
-  <View style={styles.flexspace}>
-    <View style={styles.flexContainer}>
-      <Image2/>
-      <View style={{marginLeft:8}}>
-        <Text fontSize={'md'} color={' rgba(48, 57, 114, 1)'} fontWeight={'600'}>Rishabh Singh</Text>
-        <Text color={' rgba(48, 57, 114, 0.5)'}>18/11/2001</Text>
-      </View>
-
-    </View>
-    <Text fontSize={'md'} color={' rgba(48, 57, 114, 1)'} fontWeight={'600'}>003</Text>
-  </View>
-
-
-  <View style={styles.flexspace}>
-    <View style={styles.flexContainer}>
-      <Image3/>
-      <View style={{marginLeft:8}}>
-        <Text fontSize={'md'} color={' rgba(48, 57, 114, 1)'} fontWeight={'600'}>Rishabh Singh</Text>
-        <Text color={' rgba(48, 57, 114, 0.5)'}>18/11/2001</Text>
-      </View>
-
-    </View>
-    <Text fontSize={'md'} color={' rgba(48, 57, 114, 1)'} fontWeight={'600'}>004</Text>
-  </View>
-
-
-  <View style={styles.flexspace}>
-    <View style={styles.flexContainer}>
-      <Image2/>
-      <View style={{marginLeft:8}}>
-        <Text fontSize={'md'} color={' rgba(48, 57, 114, 1)'} fontWeight={'600'}>Rishabh Singh</Text>
-        <Text color={' rgba(48, 57, 114, 0.5)'}>18/11/2001</Text>
-      </View>
-
-    </View>
-    <Text fontSize={'md'} color={' rgba(48, 57, 114, 1)'} fontWeight={'600'}>001</Text>
-  </View>
-
-  <View style={styles.flexspace}>
-    <View style={styles.flexContainer}>
-      <Image1/>
-      <View style={{marginLeft:8}}>
-        <Text fontSize={'md'} color={' rgba(48, 57, 114, 1)'} fontWeight={'600'}>Rishabh Singh</Text>
-        <Text color={' rgba(48, 57, 114, 0.5)'}>18/11/2001</Text>
-      </View>
-
-    </View>
-    <Text fontSize={'md'} color={' rgba(48, 57, 114, 1)'} fontWeight={'600'}>001</Text>
-  </View>
+  <FlatList
+      data={userData?.studentListInfo}
+      renderItem={renderData}
+      keyExtractor={(item, index) => item.toString()}
+       width={'100%'}
+      />
   </View>
 
 </View>

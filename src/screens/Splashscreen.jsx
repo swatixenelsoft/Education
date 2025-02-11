@@ -5,6 +5,8 @@ import Animated, { Easing, useSharedValue, useAnimatedStyle, withTiming, withDel
 
 const Splashscreen = ({ navigation }) => {
 
+  console.log("opened")
+
   const [animationComplete, setAnimationComplete] = useState(false); // Track animation completion
 
   const scaleValue = useSharedValue(0); // Initial scale
