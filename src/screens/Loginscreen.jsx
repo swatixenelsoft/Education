@@ -32,14 +32,16 @@ const Loginscreen = ({ navigation }) => {
 
     try {
       setIsLoading(true);
+      // navigation.navigate('bottomnav')
+
       const response = await login(email, password);
       console.log(response.data);
       showToast('success', 'Login Successful');
-      navigation.navigate('bottomnav',{user:response.data})
+      navigation.navigate('bottomnav')
       // Navigate to another screen after successful login
     } catch (error) {
       console.error(error.response?.data);
-      showToast('error', error?.response?.data?.message || 'Login failed. Please try again.');
+      // showToast('error', error?.response?.data?.message || 'Login failed. Please try again.');
     } finally {
       setIsLoading(false);
     }

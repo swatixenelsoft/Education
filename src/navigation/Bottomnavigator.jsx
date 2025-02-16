@@ -6,6 +6,8 @@ import HomeIcon from '../assets/images/Homeicon.svg'
 import Home from '../screens/Home'
 import Library from '../screens/Library'
 import LibraryIcon from '../assets/images/library.svg'
+import Idiary from '../screens/Idiary' 
+import Account from '../screens/Account'
 
 
 
@@ -32,6 +34,19 @@ const Bottomnavigator = () => {
     ),
   }}
 />
+
+<BottomTab.Screen
+  name="Idiary"
+  component={Idiary}
+  options={{
+    headerShown: false,
+    tabBarIcon: ({size,color}) => (
+      <HomeIcon width={size} height={size} fill={color} />
+    ),
+  }}
+/>
+
+
 
 
 

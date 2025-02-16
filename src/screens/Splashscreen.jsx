@@ -36,7 +36,7 @@ const Splashscreen = ({ navigation }) => {
   }, [ animationComplete]);
 
   const handleNavigation = () => {
-   navigation.navigate('Loginscreen')
+   navigation.navigate('bottomnav')
   };
 
 

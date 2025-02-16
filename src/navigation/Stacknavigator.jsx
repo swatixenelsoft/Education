@@ -6,6 +6,10 @@ import Splashscreen from '../screens/Splashscreen'
 import Bottomnavigator from './Bottomnavigator'
 import Loginscreen from '../screens/Loginscreen'
 import Forgetpassword from '../screens/Forgetpassword'
+import Account from '../screens/Account'
+import Profile from '../screens/Profile'
+import Attendance from '../screens/Attendance'
+import Fees from '../screens/Fees'
 
 
 const AuthNavigator = () => {
@@ -19,6 +23,17 @@ const AuthStack = createStackNavigator()
             <AuthStack.Screen name='Loginscreen' component={Loginscreen} options={{headerShown:false}}></AuthStack.Screen>
             <AuthStack.Screen name='forgot' component={Forgetpassword} options={{headerShown:false}}></AuthStack.Screen>
             <AuthStack.Screen name='bottomnav' component={Bottomnavigator} options={{headerShown:false}}></AuthStack.Screen>
+            <AuthStack.Screen name='Account' component={Account} options={{headerShown:false}}>        
+
+             
+
+            </AuthStack.Screen>
+            <AuthStack.Screen name='Profile' component={Profile} options={{headerShown:false}}>  
+                         
+
+</AuthStack.Screen>
+<AuthStack.Screen name='Attendance' component={Attendance} options={{headerShown:false}}></AuthStack.Screen>    
+<AuthStack.Screen name='Fees' component={Fees} options={{headerShown:false}}></AuthStack.Screen>    
 
         </AuthStack.Navigator>
         </NavigationContainer>

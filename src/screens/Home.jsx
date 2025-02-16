@@ -1,4 +1,4 @@
-import { View , TouchableOpacity, Dimensions,StyleSheet} from 'react-native'
+import { View , TouchableOpacity, Dimensions,StyleSheet, ActivityIndicator} from 'react-native'
 import React,{useEffect, useState} from 'react'
 import styles from '../styles/Home.style'
 import HamIcon from '../assets/icons/Hamburger.svg'
@@ -23,7 +23,11 @@ import I4 from '../assets/images/I1.svg'
 import Timebg from '../assets/images/Timebg.svg'
 import Period from '../assets/images/Physics.svg'
 import { getData } from '../services/authservices'
-
+import DairyBg from '../assets/icons/DairyBG.svg'
+import Timetable from '../assets/images/Timetable.svg'
+import { position } from 'native-base/lib/typescript/theme/styled-system'
+import FolderBg from '../assets/images/Folder-BG.svg'
+import { Box } from 'native-base'
 
 
 const Home = ({navigation,route}) => {
@@ -31,25 +35,50 @@ const Home = ({navigation,route}) => {
   const [selectedDay, setSelectedDay] = useState("");
   const [userData , setUserData] = useState(null)
   const {width} = Dimensions.get('window')
-  const data = route?.params
-  
-  console.log(data,'data')
-  console.log(route?.params?.name)
+    const [selectedId, setSelectedId] = useState(null);
+    const [loading , setLoading] = useState(false)
 
 
-  const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
+  const weeks = [
+    { id: 1, day: "Mon" },
+    { id: 2, day: "Tue" },
+    { id: 3, day: "Wed" },
+    { id: 4, day: "Thu" },
+    { id: 5, day: "Fri" },
+    { id: 6, day: "Sat" },
+  ];
 const get_Data = async()=>{
+  setLoading(true)
+
   try{
     const response = await getData()
-    console.log(response.data)
+    console.log(response.data,"ujhjg")
     setUserData(response.data.data)
+    setLoading(false)
 
   }
   catch(error){
+    setLoading(false)
     console.error(error.response.data)
     throw error
   }
+  finally{
+    setLoading(false)
+  }
+}
+
+
+
+const renderWeek = ({item})=>{
+
+  const isSelected = item.id === selectedId
+
+  return <TouchableOpacity onPress={() => setSelectedId(item.id)}>
+  <View style={[styles.weekContainer , isSelected && styles.selected]}>
+<Text style={[styles.weekText , isSelected && styles.selectedText]}>{item.day}</Text>
+  </View>
+  </TouchableOpacity>
 }
 
 useEffect(()=>{
@@ -99,7 +128,7 @@ useEffect(()=>{
 
   const renderItem = ({item})=>(
     <View style={styles.IcontentContainer}>
-      <Image source={{uri:item?.teacherAvatar}} width={'8'} height={'20'}></Image>
+      <Image source={{uri:item?.teacherAvatar}} width={'8'} height={'16'}></Image>
     <View style={{marginLeft:9}}>
       <Text fontSize={'lg'} fontWeight={'700'}>{item?.teacher}</Text>
       <Text color={' rgba(53, 58, 64, 1)'}>{item?.subject}</Text>
@@ -107,19 +136,31 @@ useEffect(()=>{
       </View>
   )
 
+
+  if(loading){
+
+    return  (<Box width={'100%'} height={'100%'} display={'flex'} justifyContent={'center'} alignItems={'center'}>
+    <ActivityIndicator size="large" color="rgba(11, 112, 222, 1)"/>
+    </Box>)
+  }
+
   return (
     <ScrollView>
     <View style={styles.container}>
-    <View style={{ flex: 1, position: 'relative' }}>
-<Bgblue width="100%" height="100%" style={{ position: 'absolute', top:0 , marginTop : -15 }} />
+    <View style={{ flex: 1, position: 'relative' ,width:'100%',height:'100%'}}>
+<Bgblue width="100%"  style={{ position: 'absolute', top:0 , left:0, marginTop : -50 }} />
 
 <View style={styles.headerMain}>
+  <TouchableOpacity onPress={()=>navigation.navigate('Account')}>
+
 <HamW/>
+</TouchableOpacity>
+
 
   {/* <Bell/> */}
   <View style={styles.flexItemContainer}>
   <View>
-  <Text marginTop={'2'} fontSize={'3xl'} fontWeight={'semibold'} color={'white'} ellipsizeMode='tail' numberOfLines={1} maxW={'60%'}>Hi  {userData?.name}👋</Text>
+  <Text marginTop={'2'} fontSize={'3xl'} fontWeight={'semibold'} color={'white'} ellipsizeMode='tail' numberOfLines={1} maxW={'60%'}>Hii  {userData?.name}👋</Text>
 <Text color={'#FFFFFF'}>Lets Explore your learnings today!</Text>
 </View>
 <Userimage/>
@@ -148,6 +189,26 @@ useEffect(()=>{
       />
 
 </View>
+
+<View style={styles.timeTableContainer}>
+
+<Timetable width={'100%'} style={{position:'relative'}}/>
+<View style={styles.innerTimeContainer}>
+  <Text style={styles.timeHeading}>Timetable</Text>
+<FlatList
+data={weeks}
+keyExtractor={(item)=>item.id}
+renderItem={renderWeek}
+horizontal
+marginTop={'6'}/>
+
+<View style={{elevation:5}}>
+<FolderBg />
+</View>
+
+</View>
+</View>
+
 <View style={styles.headerContainer}>
 
 

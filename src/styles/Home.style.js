@@ -75,18 +75,67 @@ const styles = StyleSheet.create({
         marginHorizontal:'auto'
     },
     IcontentContainer:{
-        padding:4,
-        borderRadius:6,
+        padding:2,
+        borderRadius:12,
         backgroundColor:'#FFFFFF',
         display:'flex',
         flexDirection:'row',
         alignItems:'center',
-        width:'47%'
+        width:'47%',
     },
     row:{
         justifyContent:'space-between',
         marginTop:9
-    }
+    },
+    timeTableContainer:{
+        width:'90%',
+        marginHorizontal:'auto',
+        position:'relative',
+    },
+    innerTimeContainer:{
+        position:'absolute',
+        paddingVertical:48,
+        paddingHorizontal:16
+    },
+    timeHeading:{
+        fontSize:18,
+        fontWeight:'500'
+    },
+    weekContainer:{
+        display:'flex',
+        justifyContent:'center',
+        alignItems:'center',
+      paddingHorizontal:12,
+      paddingVertical:6,
+        borderColor:'rgba(108, 117, 126, 1)',
+        borderWidth:2,
+        borderRadius:28,
+        marginRight:14,
+        marginTop:14
+    },
+    selected:{
+
+        display:'flex',
+        justifyContent:'center',
+        alignItems:'center',
+      paddingHorizontal:12,
+      paddingVertical:6,
+        backgroundColor:'rgba(0, 122, 255, 1)',
+        borderColor:'rgba(0, 122, 255, 1)',
+        borderWidth:2,
+        borderRadius:28,
+        marginRight:14,
+        marginTop:14
+
+    },
+    weekText:{
+        fontSize:14,
+        color:'rgba(108, 117, 126, 1)',
+        fontWeight:500
+    },
+    selectedText:{
+        color:'#FFFFFF'
+    },
 
 })
 
