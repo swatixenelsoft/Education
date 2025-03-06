@@ -7,12 +7,22 @@ import Userimage from '../assets/images/User-img.svg'
 import { FlatList, ScrollView } from 'native-base';
 import Educationbg from '../assets/images/Education_bg.svg'
 import FatherBg from '../assets/images/Father-Bg.svg'
+import moment from 'moment';
+import { Image } from 'native-base';
 
-
-const Profile = () => {
+const Profile = ({navigation,route}) => {
 
         const [selectedId, setSelectedId] = useState(null);
-    
+        const {userData} = route.params
+        const studentData = userData
+        const tabs = Object.keys(studentData);
+        const [selectedTab, setSelectedTab] = useState(tabs[0]); 
+
+
+        console.log(studentData , 'route')
+
+
+     
 
     const weeks = [
         { id: 1, day: "Basic" },
@@ -47,35 +57,57 @@ const Profile = () => {
     
 
     
-    const renderItem = ({item})=>{
 
-        const isSelected = item.id === selectedId
 
-        return <TouchableOpacity onPress={() => setSelectedId(item.id)}>
-        <View style={[styles.weekContainer , isSelected && styles.selected]}>
-<Text style={[styles.weekText , isSelected && styles.selectedText]}>{item.day}</Text>
-        </View>
-        </TouchableOpacity>
-     }
+     const renderTab = ({ item }) => (
+      <TouchableOpacity
+        style={[
+          styles.weekContainer,
+          selectedTab === item && styles.selected,
+        ]}
+        onPress={() => setSelectedTab(item)}
+      >
+        <Text style={[styles.weekText, selectedTab === item && styles.selectedText]}>
+          {item.replace("Details", "").toUpperCase()}
+        </Text>
+      </TouchableOpacity>
+    );
+
+    const renderDetails = ({ item }) => (
+      <View style={[styles.mFlexContainer,{marginTop:12}]}>
+        <Text style={styles.HeadingText}>{item.label}:</Text>
+        <Text style={styles.basicText}>{item.value}</Text>
+      </View>
+    );
+
+    const selectedData = studentData[selectedTab] || {};
+    const dataArray = Object.entries(selectedData).map(([key, value]) => ({
+      label: key
+        .replace(/([A-Z])/g, " $1") // Convert camelCase to spaced format
+        .trim()
+        .replace(/\b\w/g, (char) => char.toUpperCase()), // Capitalize first letter and after space
+      value: key.includes("dob") ? moment(value).format("DD/MM/YYYY") : value,
+    }));
 
 
   return (
     <ScrollView>
   <View style={{width:'100%'}}>
-      <View style={styles.svgContainer}>
-        <Headerbg style={{height:200}}/>
-      </View>
+        <Headerbg height={300} width={'100%'} style={{marginTop:-35}}/>
 
-      <View style={styles.contentContainer}>
+      <View style={[styles.mContentContainer,{position:'absolute',left:'5%'}]}>
 
-
+<TouchableOpacity onPress={()=>navigation.goBack()}>
       <ArrowBack style={{marginTop:12}}/>
+      </TouchableOpacity>
       <View style={styles.flexContainer}>
-        <Userimage/>
+                    <Image source={{uri:userData?.basic?.studentImage}} width={'24'} height={'24'} borderRadius={'full'} borderWidth={'1'} borderColor={'#FFFFFF'}></Image>
+
+        {/* <Userimage/> */}
         <View>
-            <Text style={styles.nameText}>Harsh Kumar</Text>
+            <Text style={styles.nameText}>{studentData?.basic?.firstName} {studentData?.basic?.lastName}</Text>
             <View style={styles.emailContainer}>
-            <Text style={styles.emailText}>harshkumar@gmail.com</Text>
+            <Text style={styles.emailText}>{studentData?.basic?.email}</Text>
 
             </View>
         </View>
@@ -83,144 +115,22 @@ const Profile = () => {
       </View>
 
       <FlatList
-      data={weeks}
+      data={tabs}
       keyExtractor={(item)=>item.id}
-      renderItem={renderItem}
+      renderItem={renderTab}
       horizontal
       marginTop={'6'}/>
       </View>
 
-      <View style={styles.contentContainer}>
-        <View>
+      <FlatList
+        data={dataArray}
+        keyExtractor={(item) => item.label}
+        renderItem={renderDetails}
+        contentContainerStyle={styles.contentContainer}
+      />
 
-        <Educationbg width={'100%'} height={550}/>
-        </View>
-
-        <View style={{position:'absolute',paddingHorizontal:16,paddingVertical:12}}>
-            <Text style={styles.basicText}>Basic Details</Text>
-
-{Object.entries(Education).map(([key,value])=>(
- <View style={[styles.mFlexContainer,{marginTop:18}]}>
- <Text style={styles.HeadingText}>{key}</Text>
- <Text style={styles.basicText}>{value}</Text>
-
-
-</View>
-))}
-           
-
-          
-
-        </View>
-
-        
-      </View>
-
-      <View style={styles.contentContainer}>
-        <View>
-
-        <FatherBg width={'100%'} height={310}/>
-        </View>
-
-        <View style={{position:'absolute',paddingHorizontal:16,paddingVertical:12}}>
-            <Text style={styles.basicText}>Basic Details</Text>
-
-{Object.entries(father).map(([key,value])=>(
- <View style={[styles.mFlexContainer,{marginTop:18}]}>
- <Text style={styles.HeadingText}>{key}</Text>
- <Text style={styles.basicText}>{value}</Text>
-
-
-</View>
-))}
-           
-
-          
-
-        </View>
-
-        
-      </View>
-
-      <View style={styles.contentContainer}>
-        <View>
-
-        <FatherBg width={'100%'} height={310}/>
-        </View>
-
-        <View style={{position:'absolute',paddingHorizontal:16,paddingVertical:12}}>
-            <Text style={styles.basicText}>Basic Details</Text>
-
-{Object.entries(father).map(([key,value])=>(
- <View style={[styles.mFlexContainer,{marginTop:18}]}>
- <Text style={styles.HeadingText}>{key}</Text>
- <Text style={styles.basicText}>{value}</Text>
-
-
-</View>
-))}
-           
-
-          
-
-        </View>
-
-        
-      </View>
-
-      <View style={styles.contentContainer}>
-        <View>
-
-        <FatherBg width={'100%'} height={310}/>
-        </View>
-
-        <View style={{position:'absolute',paddingHorizontal:16,paddingVertical:12}}>
-            <Text style={styles.basicText}>Basic Details</Text>
-
-{Object.entries(father).map(([key,value])=>(
- <View style={[styles.mFlexContainer,{marginTop:18}]}>
- <Text style={styles.HeadingText}>{key}</Text>
- <Text style={styles.basicText}>{value}</Text>
-
-
-</View>
-))}
-           
-
-          
-
-        </View>
-
-        
-      </View>
-
-      <View style={styles.contentContainer}>
-        <View>
-
-        <FatherBg width={'100%'} height={310}/>
-        </View>
-
-        <View style={{position:'absolute',paddingHorizontal:16,paddingVertical:12}}>
-            <Text style={styles.basicText}>Basic Details</Text>
-
-{Object.entries(father).map(([key,value])=>(
- <View style={[styles.mFlexContainer,{marginTop:18}]}>
- <Text style={styles.HeadingText}>{key}</Text>
- <Text style={styles.basicText}>{value}</Text>
-
-
-</View>
-))}
-           
-
-          
-
-        </View>
-
-        
-      </View>
-
-
+   
+    
      
 
 

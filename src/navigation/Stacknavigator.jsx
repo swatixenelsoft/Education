@@ -25,15 +25,16 @@ const AuthStack = createStackNavigator()
             <AuthStack.Screen name='bottomnav' component={Bottomnavigator} options={{headerShown:false}}></AuthStack.Screen>
             <AuthStack.Screen name='Account' component={Account} options={{headerShown:false}}>        
 
-             
-
             </AuthStack.Screen>
+            
             <AuthStack.Screen name='Profile' component={Profile} options={{headerShown:false}}>  
                          
 
 </AuthStack.Screen>
 <AuthStack.Screen name='Attendance' component={Attendance} options={{headerShown:false}}></AuthStack.Screen>    
-<AuthStack.Screen name='Fees' component={Fees} options={{headerShown:false}}></AuthStack.Screen>    
+<AuthStack.Screen name='Fees' component={Fees} options={{headerShown:false}}></AuthStack.Screen>  
+{/* <AuthStack.Screen name='Onboard' component={Onboardscreen} options={{headerShown:false}}>        
+</AuthStack.Screen> */}
 
         </AuthStack.Navigator>
         </NavigationContainer>

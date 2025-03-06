@@ -8,7 +8,7 @@ import Library from '../screens/Library'
 import LibraryIcon from '../assets/images/library.svg'
 import Idiary from '../screens/Idiary' 
 import Account from '../screens/Account'
-
+import IdiaryIcon from '../assets/images/Idiary.svg'
 
 
 const Bottomnavigator = () => {
@@ -41,7 +41,7 @@ const Bottomnavigator = () => {
   options={{
     headerShown: false,
     tabBarIcon: ({size,color}) => (
-      <HomeIcon width={size} height={size} fill={color} />
+      <IdiaryIcon width={size} height={size} fill={color} />
     ),
   }}
 />

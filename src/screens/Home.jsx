@@ -1,5 +1,5 @@
 import { View , TouchableOpacity, Dimensions,StyleSheet, ActivityIndicator} from 'react-native'
-import React,{useEffect, useState} from 'react'
+import React,{useEffect, useState , useCallback} from 'react'
 import styles from '../styles/Home.style'
 import HamIcon from '../assets/icons/Hamburger.svg'
 import Bell from '../assets/icons/Bell4.svg'
@@ -28,6 +28,11 @@ import Timetable from '../assets/images/Timetable.svg'
 import { position } from 'native-base/lib/typescript/theme/styled-system'
 import FolderBg from '../assets/images/Folder-BG.svg'
 import { Box } from 'native-base'
+import Folder from '../assets/images/Folder-original.svg'
+import useUserId from '../hooks/useUserid'
+import EvilIcons from 'react-native-vector-icons/FontAwesome'
+import { useFocusEffect } from '@react-navigation/native'
+
 
 
 const Home = ({navigation,route}) => {
@@ -36,7 +41,12 @@ const Home = ({navigation,route}) => {
   const [userData , setUserData] = useState(null)
   const {width} = Dimensions.get('window')
     const [selectedId, setSelectedId] = useState(null);
-    const [loading , setLoading] = useState(false)
+    const [loading , setLoading] = useState(false) 
+    const [appTimeTable , setTimetable] = useState([])
+    const [index, setIndex] = useState(0)
+    const userId = useUserId();
+    console.log(userId)
+
 
 
 
@@ -48,13 +58,31 @@ const Home = ({navigation,route}) => {
     { id: 5, day: "Fri" },
     { id: 6, day: "Sat" },
   ];
+
+  useEffect(() => {
+    // Get today's day abbreviation (e.g., "Sun", "Mon")
+    const todayIndex = new Date().getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+    const todayItem = weeks[todayIndex];
+
+    // Set the default selected day
+    if (todayItem) {
+      setSelectedId(todayItem.id);
+      setIndex(todayIndex);
+    }
+  }, []);
+  
+
 const get_Data = async()=>{
   setLoading(true)
 
   try{
-    const response = await getData()
+    const response = await getData(userId)
     console.log(response.data,"ujhjg")
     setUserData(response.data.data)
+    setTimetable(response.data.data.appTimeTables)
+    const selectedData = response.data.data.appTimeTables.find((day) => day[0]?.dayType === selectedId) || [];
+    console.log(selectedData,'fhgh')
+
     setLoading(false)
 
   }
@@ -69,21 +97,30 @@ const get_Data = async()=>{
 }
 
 
+console.log( index, userData , 'vcgfg')
 
-const renderWeek = ({item})=>{
+const renderWeek = ({item,index})=>{
 
   const isSelected = item.id === selectedId
 
-  return <TouchableOpacity onPress={() => setSelectedId(item.id)}>
+  return <TouchableOpacity onPress={() =>{ setSelectedId(item.id)
+    setIndex(index)
+  }}>
   <View style={[styles.weekContainer , isSelected && styles.selected]}>
 <Text style={[styles.weekText , isSelected && styles.selectedText]}>{item.day}</Text>
   </View>
   </TouchableOpacity>
 }
 
-useEffect(()=>{
-  get_Data()
-},[])
+// useEffect(()=>{
+//   get_Data()
+// },[])
+
+useFocusEffect(
+  useCallback(()=>{
+    get_Data()
+  },[userId])
+)
 
 
   const learningData = [
@@ -113,22 +150,41 @@ useEffect(()=>{
   const renderData = ({item})=>(
     <View style={styles.flexspace}>
     <View style={styles.flexContainer}>
-      <Image1/>
+      {item?.avatar ?       <Image source={{uri:item?.avatar}} width={'12'} height={'12'} borderRadius={'full'} alt='vv'></Image>
+:       <EvilIcons name='user-circle' size={44} color='#333'></EvilIcons>
+
+}
       <View style={{marginLeft:8}}>
         <Text fontSize={'md'} color={' rgba(48, 57, 114, 1)'} fontWeight={'600'}>{item?.name}</Text>
         <Text color={' rgba(48, 57, 114, 0.5)'}>{item?.dob}</Text>
       </View>
 
     </View>
-    <Text fontSize={'md'} color={' rgba(48, 57, 114, 1)'} fontWeight={'600'}>001</Text>
+    <Text fontSize={'md'} color={' rgba(48, 57, 114, 1)'} fontWeight={'600'}>{item?.rollNumber}</Text>
   </View>
   )
 
+  const renderTimeTable = ({ item }) => (
+    <View style={{  width: '50%', position:'relative' }}>
+        <View style={styles.timemainTableContainer}>
+          <Text style={styles.periodText}>Period {item.periodNumber}</Text>
+
+          <Text style={styles.nameTimeText}>{item.periodTeacher}</Text>
+          <Text style={styles.subText}>{item.periodSubject}</Text>
+
+        </View>
+    </View>
+  );
 
 
   const renderItem = ({item})=>(
     <View style={styles.IcontentContainer}>
-      <Image source={{uri:item?.teacherAvatar}} width={'8'} height={'16'}></Image>
+      {item?.teacherAvatar ?       <Image source={{uri:item?.teacherAvatar}} width={'10'} height={'12'} borderRadius={'lg'} alt='vv'></Image>
+:
+<EvilIcons name='user-circle' size={30} color='#333'></EvilIcons>
+
+
+}
     <View style={{marginLeft:9}}>
       <Text fontSize={'lg'} fontWeight={'700'}>{item?.teacher}</Text>
       <Text color={' rgba(53, 58, 64, 1)'}>{item?.subject}</Text>
@@ -160,10 +216,11 @@ useEffect(()=>{
   {/* <Bell/> */}
   <View style={styles.flexItemContainer}>
   <View>
-  <Text marginTop={'2'} fontSize={'3xl'} fontWeight={'semibold'} color={'white'} ellipsizeMode='tail' numberOfLines={1} maxW={'60%'}>Hii  {userData?.name}👋</Text>
+  <Text marginTop={'2'} fontSize={'3xl'} fontWeight={'semibold'} color={'white'} ellipsizeMode='tail' numberOfLines={1} maxW={'98%'}>Hii  {userData?.name}👋</Text>
 <Text color={'#FFFFFF'}>Lets Explore your learnings today!</Text>
 </View>
-<Userimage/>
+     <EvilIcons name='user-circle' size={44} color='#333'></EvilIcons>
+
 
 </View>
 <Banner width={width*0.9} style={{marginHorizontal:'auto'}}/>
@@ -192,19 +249,31 @@ useEffect(()=>{
 
 <View style={styles.timeTableContainer}>
 
-<Timetable width={'100%'} style={{position:'relative'}}/>
 <View style={styles.innerTimeContainer}>
   <Text style={styles.timeHeading}>Timetable</Text>
-<FlatList
-data={weeks}
-keyExtractor={(item)=>item.id}
-renderItem={renderWeek}
-horizontal
-marginTop={'6'}/>
+  <FlatList
+  data={weeks}
+  keyExtractor={(item) => item.id}
+  renderItem={renderWeek}
+  horizontal
+  contentContainerStyle={{
+    width: '100%',
+    flexGrow: 1,
+    justifyContent: 'space-between',
+    // paddingHorizontal: 10, // Adjust spacing
+  }}
+/>
 
-<View style={{elevation:5}}>
-<FolderBg />
-</View>
+<View>
+<FlatList
+      data={appTimeTable[index]}
+      renderItem={renderTimeTable}
+      keyExtractor={(item, index) => item.toString()}
+      numColumns={2}
+      columnWrapperStyle={styles.row}
+       width={'100%'}
+      />
+      </View>
 
 </View>
 </View>
@@ -233,7 +302,7 @@ marginTop={'6'}/>
 <Text fontSize={'md'} color={' rgba(48, 57, 114, 1)'} fontWeight={'600'} width={'90%'}  marginX={'auto'}>Students</Text>
 
   <View style={styles.bottomContent}>
- 
+  
 
   <FlatList
       data={userData?.studentListInfo}
@@ -241,7 +310,7 @@ marginTop={'6'}/>
       keyExtractor={(item, index) => item.toString()}
        width={'100%'}
       />
-  </View>
+  </View> 
 
 </View>
       

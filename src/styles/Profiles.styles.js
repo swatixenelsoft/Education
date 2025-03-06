@@ -4,8 +4,8 @@ const styles = StyleSheet.create({
     svgContainer: {
         position: 'absolute',
         width: '100%',
-        height: 300,
-        top: 0,
+        height: 200,
+        top: -4,
         left: 0,
         zIndex: -1, // Push background behind other elements
       },
@@ -70,22 +70,35 @@ const styles = StyleSheet.create({
         color:'rgba(0, 123, 255, 1)'
     },
     contentContainer:{
-        marginTop:90,
         width:'90%',
         marginHorizontal:'auto',
         position:'relative',
+        backgroundColor:'#FFFFFF',
+        paddingHorizontal:10,
+        paddingVertical:20,
+        borderRadius:10,
+        marginTop:18,
+        marginBottom:16
     },
+    mContentContainer:{
+      width:'90%',
+      marginHorizontal:'auto',
+      position:'relative',
+  },
     basicText:{
-        fontSize:18,
+        fontSize:16,
+        color:'rgba(53, 58, 64, 1)'
     },
     HeadingText:{
-        fontSize:18,
+        fontSize:16,
         fontWeight:600,
-        width:'35%'
+        width:'45%',
+        color:'rgba(53, 58, 64, 1)'
 
     },
     mFlexContainer:{
-        marginTop:5,
+      width:'100%',
+        marginTop:10,
         display:'flex',
         flexDirection:'row',
         alignItems:'center'

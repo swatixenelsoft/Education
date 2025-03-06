@@ -18,10 +18,24 @@ export const login = async(email,password)=>{
     }
 }
 
-export const getData = async()=>{
+export const getData = async(userId)=>{
     try{
 
-        const response = await axios.get('https://api.enfinitesmartschool.com/api/Student/app/dashboard-info/?id=51bdb011-69c3-430b-b610-f51b3651aeb2')
+        const response = await axios.get(`https://api.enfinitesmartschool.com/api/Student/app/dashboard-info/?id=${userId}`)
+        return response;
+
+    }
+    catch(error){
+        console.error(error)
+        throw error
+    }
+}
+
+
+export const getUserData = async(userId)=>{
+    try{
+
+        const response = await axios.get(`https://api.enfinitesmartschool.com/api/Student/app/profile/?id=${userId}`)
         return response;
 
     }

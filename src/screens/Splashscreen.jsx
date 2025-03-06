@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet , Text} from 'react-native';
 import Animated, { Easing, useSharedValue, useAnimatedStyle, withTiming, withDelay, runOnJS } from 'react-native-reanimated';
+import useUserId from '../hooks/useUserid';
+import Logo from '../assets/icons/Logo_final.svg'
 
 
 const Splashscreen = ({ navigation }) => {
+
+  const userId = useUserId()
 
   console.log("opened")
 
@@ -19,7 +23,7 @@ const Splashscreen = ({ navigation }) => {
   // Animation effect
   useEffect(() => {
     // Start the zoom-in animation
-    scaleValue.value = withTiming(1, { duration: 1500, easing: Easing.out(Easing.ease) });
+    scaleValue.value = withTiming(0.7, { duration: 1500, easing: Easing.out(Easing.ease) });
     opacityValue.value = withTiming(1, { duration: 1500, easing: Easing.ease }, () => {
       // Set animationComplete to true once the animation finishes
       opacityValue.value = withDelay(500, withTiming(1, { duration: 0 }, () => {
@@ -36,7 +40,14 @@ const Splashscreen = ({ navigation }) => {
   }, [ animationComplete]);
 
   const handleNavigation = () => {
-   navigation.navigate('bottomnav')
+    if(userId){
+      navigation.replace('bottomnav')
+
+    }
+    else{
+      navigation.replace('Loginscreen')
+
+    }
   };
 
 
@@ -52,7 +63,8 @@ const Splashscreen = ({ navigation }) => {
     <View style={styles.container}>
       {/* Animated Logo */}
       <Animated.View style={[styles.logoContainer, animatedLogoStyle]}>
-        <Text style={{fontSize:18}}>Education App</Text>
+        <Logo  />
+
       </Animated.View>
     </View>
   );
@@ -68,10 +80,12 @@ const styles = StyleSheet.create({
   logoContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+    width:'80%',
+    marginHorizontal:'auto'
   },
   logo: {
-    width: 200,
-    height: 200,
+    width: 150,
+    height: 150,
   },
 });
 

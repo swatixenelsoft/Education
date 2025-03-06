@@ -91,40 +91,61 @@ const styles = StyleSheet.create({
         width:'90%',
         marginHorizontal:'auto',
         position:'relative',
+        paddingVertical:10
     },
     innerTimeContainer:{
-        position:'absolute',
-        paddingVertical:48,
-        paddingHorizontal:16
+        width:'100%',
+        backgroundColor:'#FFFFFF',
+        marginTop:20,
+        borderRadius:10,
+        padding:4,
+        paddingHorizontal:10,
+        paddingVertical:16
+
     },
+    timemainTableContainer:{
+        width:'90%',
+        paddingHorizontal:8,
+        borderRadius:10,
+        elevation:5,
+        backgroundColor:'#FFFFFF',
+        marginHorizontal:'auto',
+        marginTop:4,
+        marginBottom:4,
+        paddingVertical:4
+
+    },
+
+
     timeHeading:{
         fontSize:18,
-        fontWeight:'500'
+        fontWeight:'500',
     },
     weekContainer:{
         display:'flex',
         justifyContent:'center',
         alignItems:'center',
-      paddingHorizontal:12,
-      paddingVertical:6,
+      paddingHorizontal:11,
+      paddingVertical:2,
         borderColor:'rgba(108, 117, 126, 1)',
-        borderWidth:2,
+        borderWidth:0.5,
         borderRadius:28,
-        marginRight:14,
-        marginTop:14
+        // marginRight:6,
+        marginTop:14,
+        marginHorizontal:'auto'
     },
     selected:{
 
         display:'flex',
         justifyContent:'center',
         alignItems:'center',
-      paddingHorizontal:12,
-      paddingVertical:6,
+      paddingHorizontal:9,
+      paddingVertical:2,
         backgroundColor:'rgba(0, 122, 255, 1)',
         borderColor:'rgba(0, 122, 255, 1)',
         borderWidth:2,
         borderRadius:28,
-        marginRight:14,
+        // marginRight:6,
         marginTop:14
 
     },
@@ -136,6 +157,24 @@ const styles = StyleSheet.create({
     selectedText:{
         color:'#FFFFFF'
     },
+    periodText:{
+        fontSize:10,
+        fontWeight:'600',
+        color:'rgba(146, 169, 196, 1)'
+    },
+    nameTimeText:{
+        fontSize:12,
+        fontWeight:'600',
+        color:'rgba(146, 169, 196, 1)',
+        marginTop:6,
+        marginBottom:-4
+
+    },
+    subText:{
+        fontSize:16,
+        fontWeight:'600',
+        marginTop:0
+    }
 
 })
 

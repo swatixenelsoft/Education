@@ -167,7 +167,14 @@ const styles = StyleSheet.create({
         monthContainer:{
             fontSize:14,
             fontWeight:'700'
-        }
+        },
+        DateContainer:{
+            width:'80%',
+            marginHorizontal:'auto',
+            backgroundColor:'#FFFFFF',
+            borderWidth:1,
+            marginTop:10
+        },
 
 
 })

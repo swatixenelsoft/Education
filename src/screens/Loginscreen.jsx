@@ -7,6 +7,9 @@ import styles from '../styles/Loginscreen.style';
 import { login } from '../services/authservices';
 import { showToast } from '../components/CustomToast';
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import {jwtDecode} from "jwt-decode";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const Loginscreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -37,10 +40,15 @@ const Loginscreen = ({ navigation }) => {
       const response = await login(email, password);
       console.log(response.data);
       showToast('success', 'Login Successful');
+      console.log(response.data.token.accessToken)
+      const decodedToken = jwtDecode("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIyOTZhMDQ2OC00N2E4LTRiN2YtYTA0MC1kOWZjYzc3MjNiZDkiLCJlbWFpbCI6InMzQGVuZmluaXRlLmluIiwidW5pcXVlX25hbWUiOiJzMyBrdW1hciIsImF2YXRhciI6IiIsInJvbGUiOiJUZWFjaGVyIiwic2Nob29sTG9nbyI6Imh0dHBzOi8vZW5maW5pdGUtc20uczMuYXAtc291dGgtMS5hbWF6b25hd3MuY29tLzYvaW1hZ2VzL2IyNDZiYTJlLWM2ZmEtNDBkOC05Y2Y3LTIyZDVkNjk5YWRkNTYzODY5OTc4OTEwNjA5NzE2Ni5qcGVnIiwic2Nob29sTmFtZSI6IkVuZmluaXRlIFNjaG9vbCIsImVuZmluaXRlc21hcnRzY2hvbGxjbGFpbXR5cGVzLXNjaG9vbGlkZW50aWZpZXIiOiI2IiwibmJmIjoxNzQwMjM4MDc4LCJleHAiOjE3NDAyNDUyNzgsImlhdCI6MTc0MDIzODA3OCwiaXNzIjoiRW5maW5pdGUgU21hcnQgU2Nob29sIiwiYXVkIjoiRW5maW5pdGUgU21hcnQgU2Nob29sIFVzZXJzIn0.d7OYCurIGYYfjkSVQakkIdC7NpFoECWLUrDW_6HqGw8");
+      console.log(decodedToken.nameid,'hgh')
+      AsyncStorage.setItem('Userid',decodedToken.nameid)
+
       navigation.navigate('bottomnav')
       // Navigate to another screen after successful login
     } catch (error) {
-      console.error(error.response?.data);
+      console.error(error);
       // showToast('error', error?.response?.data?.message || 'Login failed. Please try again.');
     } finally {
       setIsLoading(false);
@@ -71,7 +79,7 @@ const Loginscreen = ({ navigation }) => {
                   secureTextEntry={!showPassword}
                 />
                 <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.iconContainer}>
-                  <Ionicons name={showPassword ? 'eye-off' : 'eye'} size={24} color="black" />
+                  <Ionicons name={showPassword ? 'eye' : 'eye-off'} size={24} color="#000000sss" />
                 </TouchableOpacity>
               </View>
         <Text style={styles.forgot}>Forgot password?</Text>
